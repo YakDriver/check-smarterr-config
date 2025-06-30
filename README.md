@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: YakDriver/check-smarterr-config@v1
+      - uses: YakDriver/check-smarterr-config@v0.3.0
 ```
 
 ### Advanced Usage
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: YakDriver/check-smarterr-config@v1
+      - uses: YakDriver/check-smarterr-config@v0.3.0
         with:
           start-dir: './src'
           base-dir: './configs'
@@ -66,7 +66,7 @@ jobs:
 ### Check configs in a specific directory
 
 ```yaml
-- uses: YakDriver/check-smarterr-config@v1
+- uses: YakDriver/check-smarterr-config@v0.3.0
   with:
     start-dir: './internal/errors'
 ```
@@ -74,7 +74,7 @@ jobs:
 ### Use with custom base directory for go:embed
 
 ```yaml
-- uses: YakDriver/check-smarterr-config@v1
+- uses: YakDriver/check-smarterr-config@v0.3.0
   with:
     start-dir: './pkg/myservice'
     base-dir: './configs'
@@ -83,7 +83,7 @@ jobs:
 ### Silent mode (only exit codes)
 
 ```yaml
-- uses: YakDriver/check-smarterr-config@v1
+- uses: YakDriver/check-smarterr-config@v0.3.0
   with:
     silent: 'true'
 ```
@@ -91,7 +91,7 @@ jobs:
 ### Debug mode for troubleshooting
 
 ```yaml
-- uses: YakDriver/check-smarterr-config@v1
+- uses: YakDriver/check-smarterr-config@v0.3.0
   with:
     debug: 'true'
 ```
