@@ -1,0 +1,33 @@
+name: Test Action
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-action:
+    name: Test the smarterr config checker
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Create test smarterr config
+        run: |
+          mkdir -p test-configs
+          cat > test-configs/smarterr.hcl << 'EOF'
+          # Test smarterr configuration
+          parameter "service" {
+            value = "CloudWatch"
+          }
+          EOF
+        
+      - name: Test the action
+        uses: ./
+        with:
+          base-dir: './test-configs'
+          start-dir: '.'
+          debug: 'true'

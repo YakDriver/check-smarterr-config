@@ -1,0 +1,43 @@
+name: 'Check smarterr config'
+description: 'GitHub Action to check smarterr configuration files'
+author: 'YakDriver'
+branding:
+  icon: 'check-circle'
+  color: 'green'
+
+inputs:
+  start-dir:
+    description: 'Directory where code using smarterr lives (default: current directory). This is typically where the error occurs.'
+    required: false
+    default: '.'
+  base-dir:
+    description: 'Parent directory where go:embed is used (optional, but recommended for proper config layering as in the application). If not set, config applies only to the current directory.'
+    required: false
+    default: ''
+  debug:
+    description: 'Enable smarterr debug output (even if config fails to load)'
+    required: false
+    default: 'false'
+  quiet:
+    description: 'Only output errors (suppresses merged config and warnings)'
+    required: false
+    default: 'false'
+  silent:
+    description: 'No output, only exit code (non-zero if errors)'
+    required: false
+    default: 'false'
+  smarterr-config-pattern:
+    description: 'Pattern to find smarterr config files (default: finds all smarterr.hcl files)'
+    required: false
+    default: '**/smarterr.hcl'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.start-dir }}
+    - ${{ inputs.base-dir }}
+    - ${{ inputs.debug }}
+    - ${{ inputs.quiet }}
+    - ${{ inputs.silent }}
+    - ${{ inputs.smarterr-config-pattern }}
