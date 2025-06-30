@@ -1,13 +1,10 @@
 FROM golang:1.23-alpine3.20 AS builder
 
-RUN apk add --no-cache git
+# Accept smarterr version as build argument
+ARG SMARTERR_VERSION=latest
 
-WORKDIR /build
-
-# Clone and build smarterr
-RUN git clone https://github.com/YakDriver/smarterr.git . && \
-    go mod download && \
-    CGO_ENABLED=0 GOOS=linux go build -o smarterr .
+# Install smarterr CLI
+RUN CGO_ENABLED=0 GOOS=linux go install github.com/YakDriver/smarterr/cmd/smarterr@${SMARTERR_VERSION}
 
 # Use a minimal runtime image — pin Alpine version here too
 FROM alpine:3.20
@@ -15,7 +12,7 @@ FROM alpine:3.20
 RUN apk add --no-cache findutils
 
 # Copy only the compiled binary
-COPY --from=builder /build/smarterr /usr/local/bin/smarterr
+COPY --from=builder /go/bin/smarterr /usr/local/bin/smarterr
 RUN chmod +x /usr/local/bin/smarterr
 
 # Copy and prepare entrypoint
