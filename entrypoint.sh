@@ -44,7 +44,7 @@ if [ -z "$CONFIG_FILES" ]; then
     exit 1
 fi
 
-echo "Found smarterr config files:"
+echo "Found these smarterr config files:"
 echo "$CONFIG_FILES"
 echo ""
 
