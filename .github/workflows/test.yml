@@ -28,5 +28,6 @@ jobs:
       - name: Test the action
         uses: ./
         with:
-          start-dir: './test-configs'
+          base-dir: './test-configs'
+          start-dir: '.'
           debug: 'true'
