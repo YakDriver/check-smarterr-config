@@ -16,6 +16,7 @@ RUN apk add --no-cache findutils
 
 # Copy only the compiled binary
 COPY --from=builder /build/smarterr /usr/local/bin/smarterr
+RUN chmod +x /usr/local/bin/smarterr
 
 # Copy and prepare entrypoint
 COPY entrypoint.sh /entrypoint.sh
