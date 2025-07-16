@@ -1,6 +1,6 @@
 # check-smarterr-config
 
-A GitHub Action to check [smarterr](https://github.com/YakDriver/smarterr) configuration files in your CI/CD pipeline.
+A GitHub Action to check [smarterr](https://github.com/YakDriver/smarterr) configuration files in your CI/CD pipeline. This action is a thin wrapper around the [smarterr](https://github.com/YakDriver/smarterr) CLI.
 
 ## Overview
 
