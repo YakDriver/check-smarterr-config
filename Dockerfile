@@ -1,4 +1,4 @@
-FROM golang:1.23-alpine3.20 AS builder
+FROM golang:1.24-alpine3.20 AS builder
 
 # Accept smarterr version as build argument
 ARG SMARTERR_VERSION=latest
