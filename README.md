@@ -54,7 +54,7 @@ jobs:
 
 ## How It Works
 
-1. The action searches for files named `smarterr.hcl`. When `base-dir` is set, it searches under `base-dir` (the `go:embed` root where your configs live); otherwise it searches under `start-dir`. This keeps discovery aligned with what your application actually embeds and avoids checking unrelated `smarterr.hcl` files elsewhere in the repository (test fixtures, vendored code, nested modules).
+1. The action searches for files named `smarterr.hcl`. When `base-dir` is set, it searches under `base-dir` (the root smarterr uses for config layering); otherwise it searches under `start-dir`. This excludes stray `smarterr.hcl` files *outside* that root (elsewhere in the repo) that you didn't intend to validate. It does not inspect your `go:embed` patterns, so every `smarterr.hcl` *under* the root is still checked.
 2. For each config file found, it runs `smarterr check` with the appropriate flags
 3. The action reports success/failure for each config file
 4. The overall action fails if any config check fails
@@ -106,15 +106,15 @@ Example output:
 Searching for smarterr.hcl files under: ./internal
 Found these smarterr config files:
 ./internal/errors/smarterr.hcl
-./pkg/service/smarterr.hcl
+./internal/service/smarterr.hcl
 
 Checking smarterr config: ./internal/errors/smarterr.hcl
 Config directory: ./internal/errors
 ✅ Config check passed: ./internal/errors/smarterr.hcl
 
-Checking smarterr config: ./pkg/service/smarterr.hcl
-Config directory: ./pkg/service
-✅ Config check passed: ./pkg/service/smarterr.hcl
+Checking smarterr config: ./internal/service/smarterr.hcl
+Config directory: ./internal/service
+✅ Config check passed: ./internal/service/smarterr.hcl
 
 🎉 All smarterr config checks passed!
 ```

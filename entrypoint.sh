@@ -31,13 +31,12 @@ fi
 # Change to the working directory
 cd "$GITHUB_WORKSPACE"
 
-# Scope discovery to the config/layering root. base-dir is the go:embed parent
-# where the smarterr.hcl files actually live and the root smarterr uses for
-# layering, so when it's set we search there. This keeps discovery aligned with
-# what the application actually embeds and avoids picking up unrelated
-# smarterr.hcl files elsewhere in the repo (test fixtures, vendored code, nested
-# modules), which would otherwise be checked and could fail the action. When
-# base-dir is not set, fall back to start-dir.
+# Scope discovery to the layering root. base-dir is the go:embed parent that
+# smarterr uses as the root for config layering, so when it's set we search
+# there, falling back to start-dir otherwise. This excludes stray smarterr.hcl
+# files *outside* that root (elsewhere in the repo) that would otherwise be
+# checked and could fail the action. Note: it does not inspect go:embed
+# patterns, so every smarterr.hcl *under* the root is still discovered.
 SEARCH_DIR="${BASE_DIR:-$START_DIR}"
 
 echo "Searching for smarterr.hcl files under: $SEARCH_DIR"
