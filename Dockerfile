@@ -1,4 +1,4 @@
-FROM golang:1.24-alpine3.22 AS builder
+FROM golang:1.26-alpine3.24 AS builder
 
 # Accept smarterr version as build argument
 ARG SMARTERR_VERSION=latest
@@ -7,7 +7,7 @@ ARG SMARTERR_VERSION=latest
 RUN CGO_ENABLED=0 GOOS=linux go install github.com/YakDriver/smarterr/cmd/smarterr@${SMARTERR_VERSION}
 
 # Use a minimal runtime image — pin Alpine version here too
-FROM alpine:3.22
+FROM alpine:3.24
 
 RUN apk add --no-cache findutils
 
