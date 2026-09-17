@@ -24,7 +24,15 @@ jobs:
             value = "CloudWatch"
           }
           EOF
-        
+          # An intentionally-broken config OUTSIDE base-dir. Discovery is scoped
+          # to base-dir, so this must NOT be checked; if it were, the action
+          # would fail on the parse error. This guards issue #17 (over-broad
+          # discovery) from regressing.
+          mkdir -p outside-base
+          cat > outside-base/smarterr.hcl << 'EOF'
+          this is not valid smarterr hcl {{{
+          EOF
+
       - name: Test the action
         uses: ./
         with:

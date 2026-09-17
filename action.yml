@@ -26,10 +26,6 @@ inputs:
     description: 'No output, only exit code (non-zero if errors)'
     required: false
     default: 'false'
-  smarterr-config-pattern:
-    description: 'Pattern to find smarterr config files (default: finds all smarterr.hcl files)'
-    required: false
-    default: '**/smarterr.hcl'
 
 runs:
   using: 'docker'
@@ -40,4 +36,3 @@ runs:
     - ${{ inputs.debug }}
     - ${{ inputs.quiet }}
     - ${{ inputs.silent }}
-    - ${{ inputs.smarterr-config-pattern }}

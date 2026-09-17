@@ -8,7 +8,6 @@ BASE_DIR="${2:-""}"
 DEBUG="${3:-"false"}"
 QUIET="${4:-"false"}"
 SILENT="${5:-"false"}"
-SMARTERR_CONFIG_PATTERN="${6:-"**/smarterr.hcl"}"
 
 # Build smarterr command flags
 SMARTERR_FLAGS=""
@@ -32,15 +31,22 @@ fi
 # Change to the working directory
 cd "$GITHUB_WORKSPACE"
 
-# Find all smarterr.hcl files using the pattern
-echo "Searching for smarterr config files with pattern: $SMARTERR_CONFIG_PATTERN"
+# Scope discovery to the layering root. base-dir is the go:embed parent that
+# smarterr uses as the root for config layering, so when it's set we search
+# there, falling back to start-dir otherwise. This excludes stray smarterr.hcl
+# files *outside* that root (elsewhere in the repo) that would otherwise be
+# checked and could fail the action. Note: it does not inspect go:embed
+# patterns, so every smarterr.hcl *under* the root is still discovered.
+SEARCH_DIR="${BASE_DIR:-$START_DIR}"
 
-# Use find to locate smarterr.hcl files
-CONFIG_FILES=$(find "$START_DIR" -name "smarterr.hcl" -type f 2>/dev/null || true)
+echo "Searching for smarterr.hcl files under: $SEARCH_DIR"
+
+# Use find to locate smarterr.hcl files (exact file name, matching smarterr's
+# own discovery, which recognizes only files named exactly "smarterr.hcl").
+CONFIG_FILES=$(find "$SEARCH_DIR" -name "smarterr.hcl" -type f 2>/dev/null || true)
 
 if [ -z "$CONFIG_FILES" ]; then
-    echo "No smarterr.hcl files found in directory: $START_DIR"
-    echo "Searched with pattern: $SMARTERR_CONFIG_PATTERN"
+    echo "No smarterr.hcl files found under: $SEARCH_DIR"
     exit 1
 fi
 

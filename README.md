@@ -40,7 +40,6 @@ jobs:
           debug: 'true'
           quiet: 'false'
           silent: 'false'
-          smarterr-config-pattern: '**/smarterr.hcl'
 ```
 
 ## Inputs
@@ -52,11 +51,10 @@ jobs:
 | `debug` | Enable smarterr debug output (even if config fails to load) | No | `false` |
 | `quiet` | Only output errors (suppresses merged config and warnings) | No | `false` |
 | `silent` | No output, only exit code (non-zero if errors) | No | `false` |
-| `smarterr-config-pattern` | Pattern to find smarterr config files | No | `**/smarterr.hcl` |
 
 ## How It Works
 
-1. The action searches for all `smarterr.hcl` files in your repository using the specified pattern
+1. The action searches for files named `smarterr.hcl`. When `base-dir` is set, it searches under `base-dir` (the root smarterr uses for config layering); otherwise it searches under `start-dir`. This excludes stray `smarterr.hcl` files *outside* that root (elsewhere in the repo) that you didn't intend to validate. It does not inspect your `go:embed` patterns, so every `smarterr.hcl` *under* the root is still checked.
 2. For each config file found, it runs `smarterr check` with the appropriate flags
 3. The action reports success/failure for each config file
 4. The overall action fails if any config check fails
@@ -105,18 +103,18 @@ The action provides clear feedback about:
 
 Example output:
 ```
-Searching for smarterr config files with pattern: **/smarterr.hcl
-Found smarterr config files:
+Searching for smarterr.hcl files under: ./internal
+Found these smarterr config files:
 ./internal/errors/smarterr.hcl
-./pkg/service/smarterr.hcl
+./internal/service/smarterr.hcl
 
 Checking smarterr config: ./internal/errors/smarterr.hcl
 Config directory: ./internal/errors
 ✅ Config check passed: ./internal/errors/smarterr.hcl
 
-Checking smarterr config: ./pkg/service/smarterr.hcl
-Config directory: ./pkg/service
-✅ Config check passed: ./pkg/service/smarterr.hcl
+Checking smarterr config: ./internal/service/smarterr.hcl
+Config directory: ./internal/service
+✅ Config check passed: ./internal/service/smarterr.hcl
 
 🎉 All smarterr config checks passed!
 ```
