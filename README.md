@@ -40,7 +40,6 @@ jobs:
           debug: 'true'
           quiet: 'false'
           silent: 'false'
-          smarterr-config-pattern: '**/smarterr.hcl'
 ```
 
 ## Inputs
@@ -52,11 +51,10 @@ jobs:
 | `debug` | Enable smarterr debug output (even if config fails to load) | No | `false` |
 | `quiet` | Only output errors (suppresses merged config and warnings) | No | `false` |
 | `silent` | No output, only exit code (non-zero if errors) | No | `false` |
-| `smarterr-config-pattern` | Pattern to find smarterr config files | No | `**/smarterr.hcl` |
 
 ## How It Works
 
-1. The action searches for all `smarterr.hcl` files in your repository using the specified pattern
+1. The action searches for files named `smarterr.hcl`. When `base-dir` is set, it searches under `base-dir` (the `go:embed` root where your configs live); otherwise it searches under `start-dir`. This keeps discovery aligned with what your application actually embeds and avoids checking unrelated `smarterr.hcl` files elsewhere in the repository (test fixtures, vendored code, nested modules).
 2. For each config file found, it runs `smarterr check` with the appropriate flags
 3. The action reports success/failure for each config file
 4. The overall action fails if any config check fails
@@ -105,8 +103,8 @@ The action provides clear feedback about:
 
 Example output:
 ```
-Searching for smarterr config files with pattern: **/smarterr.hcl
-Found smarterr config files:
+Searching for smarterr.hcl files under: ./internal
+Found these smarterr config files:
 ./internal/errors/smarterr.hcl
 ./pkg/service/smarterr.hcl
 
