@@ -3,7 +3,7 @@ FROM golang:1.26-alpine3.24 AS builder
 
 # Pin the smarterr CLI version. Do not use "latest": a smarterr release that
 # raises its Go directive breaks this image build for every consumer.
-ARG SMARTERR_VERSION=v0.9.0
+ARG SMARTERR_VERSION=v0.10.0
 
 # Install smarterr CLI
 RUN CGO_ENABLED=0 GOOS=linux go install github.com/YakDriver/smarterr/cmd/smarterr@${SMARTERR_VERSION}

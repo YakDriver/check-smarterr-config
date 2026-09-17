@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.6.0] September 17, 2026
+
+### Changed
+- Bump the pinned `SMARTERR_VERSION` to `v0.10.0` (from `v0.9.0`). The builder
+  stays `golang:1.26-alpine3.24`, since smarterr v0.10.0 keeps the `go 1.26`
+  directive.
+
 ## [v0.5.0] September 17, 2026
 
 ### Fixed
