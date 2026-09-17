@@ -48,8 +48,10 @@ fi
 # Change to the working directory. Guard against an unset/empty GITHUB_WORKSPACE
 # (e.g. running the image outside GitHub Actions) so failure is explicit rather
 # than a cryptic `cd` error under `set -e`.
-cd "${GITHUB_WORKSPACE:-.}" || {
-    echo "GITHUB_WORKSPACE is not set to a valid directory" >&2
+cd "${GITHUB_WORKSPACE:-.}" 2>/dev/null || {
+    # Replace cd's raw stderr with a clearer message, and honor silent mode
+    # (no wrapper output, only the exit code).
+    [ "$SILENT" = "true" ] || echo "GITHUB_WORKSPACE is not set to a valid directory" >&2
     exit 1
 }
 
