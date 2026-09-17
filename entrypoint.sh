@@ -51,8 +51,10 @@ echo ""
 # Track overall exit code
 OVERALL_EXIT_CODE=0
 
-# Check each config file
-echo "$CONFIG_FILES" | while IFS= read -r config_file; do
+# Check each config file. Read via a here-document rather than a pipe so the
+# loop runs in the current shell; in a pipeline it runs in a subshell and the
+# exit code below never sees the failure.
+while IFS= read -r config_file; do
     if [ -n "$config_file" ]; then
         config_dir=$(dirname "$config_file")
         echo "Checking smarterr config: $config_file"
@@ -72,7 +74,9 @@ echo "$CONFIG_FILES" | while IFS= read -r config_file; do
         fi
         echo ""
     fi
-done
+done <<EOF
+$CONFIG_FILES
+EOF
 
 if [ $OVERALL_EXIT_CODE -eq 0 ]; then
     if [ "$SILENT" != "true" ]; then

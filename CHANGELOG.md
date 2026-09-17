@@ -8,10 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
-- Build the smarterr CLI with a Go 1.26 builder image. smarterr v0.9.0 requires
-  Go 1.26, so the previous `golang:1.24` builder failed to install it (Alpine
-  can't run the auto-downloaded glibc toolchain). Bumped the builder to
-  `golang:1.26-alpine3.24` and the runtime to `alpine:3.24`.
+- Build the smarterr CLI with a Go 1.26 builder and pin `SMARTERR_VERSION` to a
+  released tag instead of `latest`, so a smarterr release that raises its Go
+  directive can no longer break the image build for consumers (#10).
+- Propagate per-config check failures instead of swallowing them in a pipeline
+  subshell (#10).
+
+### Changed
+- Move the builder and runtime images to the latest Alpine (`golang:1.26-alpine3.24`
+  and `alpine:3.24`).
 
 ## [v0.3.0] June 30, 2025
 
